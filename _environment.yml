@@ -1,6 +1,0 @@
-name: UN_F1
-channels:
-  - conda-forge
-dependencies:
-  - tensorflow
-  - tensorflow-hub
