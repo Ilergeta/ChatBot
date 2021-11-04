@@ -51,7 +51,7 @@ def main():
     ax.scatter(x=x, y=use_result[0, :])
 
     ax.scatter(x[best_value], use_result[0, best_value], marker='o', s=100)
-    ax.text(x[best_value] + 10, use_result[row, best_value], best_value, size=16,
+    ax.text(x[best_value] + 10, use_result[0, best_value], best_value, size=16,
           color='darkorange', weight='bold')
 
     st.pyplot(fig)
