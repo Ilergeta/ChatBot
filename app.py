@@ -4,6 +4,7 @@ Here's our first attempt at using data to create a table:
 """
 import pathlib
 
+import os
 import pandas as pd
 import streamlit as st
 import numpy as np
