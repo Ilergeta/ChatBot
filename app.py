@@ -39,27 +39,7 @@ def main():
 
     best_value = np.argmax(use_result[0])
 
-    use_result
-
-    # Make visualization
-    fig, ax = plt.subplots(figsize=(20, 8))
-
-    ax.set_title('Similarity for USE model', fontsize=30)
-
-    use_result = np.inner(question_encodings, question_orig_encodings)
-
-    x = range(use_result.shape[1])
-
-    ax.scatter(x=x, y=use_result[0, :])
-
-    ax.scatter(x[best_value], use_result[0, best_value], marker='o', s=100)
-    ax.text(x[best_value] + 10, use_result[0, best_value], best_value, size=16,
-          color='darkorange', weight='bold')
-
-    st.pyplot(fig)
-
-
-
+    make_viz(best_value, use_result)
 
 
 def load_page():
@@ -112,6 +92,18 @@ def load_page():
     st.markdown(text_short)
 
     return st.session_state.input_text
+
+
+def make_viz(best_value, use_result):
+    # Make visualization
+    fig, ax = plt.subplots(figsize=(20, 8))
+    ax.set_title('Similarity for USE model', fontsize=30)
+    x = range(use_result.shape[1])
+    ax.scatter(x=x, y=use_result[0, :])
+    ax.scatter(x[best_value], use_result[0, best_value], marker='o', s=100)
+    ax.text(x[best_value] + 10, use_result[0, best_value], best_value, size=16,
+            color='darkorange', weight='bold')
+    st.pyplot(fig)
 
 if __name__ == "__main__":
     main()
