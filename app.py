@@ -105,5 +105,6 @@ def make_viz(best_value, use_result):
             color='darkorange', weight='bold')
     st.pyplot(fig)
 
+
 if __name__ == "__main__":
     main()
