@@ -1,0 +1,39 @@
+name: UN_F1
+channels:
+  - conda-forge
+  - anaconda
+  - pytorch
+  - defaults
+dependencies:
+  - notebook
+  - pandas
+  - matplotlib
+  - pip
+  - python-docx
+  - docx2txt
+  - nltk
+  - wordcloud
+  - gensim
+  - tesseract
+  - pytesseract
+  - opencv
+  - poppler
+  - pdf2image
+  - langdetect
+  - beautifulsoup4
+  - pyldavis
+  - jupyter-resource-usage
+  - openpyxl
+  - seaborn
+  - tensorflow
+  - tensorflow-hub
+  - pip:
+    - jedi==0.17.2  # TAB completion error detected
+    - scikit-learn
+    - PyPDF2
+    - pdfminer.six
+    - language-tags
+    - imutils
+    - python-Levenshtein
+    - ssnmf
+    - tensorflow-text
