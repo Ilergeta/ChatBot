@@ -44,6 +44,8 @@ def main():
     # Make visualization
     fig, ax = plt.subplots(figsize=(20, 8))
 
+    fig.title('Similarity for USE model', fontsize=30)
+
     use_result = np.inner(question_encodings, question_orig_encodings)
 
     x = range(use_result.shape[1])
