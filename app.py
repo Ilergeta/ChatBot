@@ -9,7 +9,7 @@ import numpy as np
 import time
 
 text_short = """
-__ITC ML similarity model__:
+__Disclamer__:
 
 
 _This website is not for legal purposes and it is work in progress!_
@@ -38,15 +38,19 @@ is encoded it is compared (with [cosine similarity](https://en.wikipedia.org/wik
 model outputs more similar activities proposed for those issues.
 """
 
-st.markdown(text_short)
 st.sidebar.markdown(text_long)
 
-st.title('ITC ChatBot')
+st.title('ITC ML ChatBot')
 
 st.text_area(
   "Tell us your trade problem:",
-  "prova",
   key='input_text',
   height=200,
   max_chars=5000
 )
+
+st.markdown('<h2 style="font-family:Courier;text-align:center;">Your Story</h2>',
+        unsafe_allow_html=True,)
+
+st.markdown('---')
+st.markdown(text_short)
