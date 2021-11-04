@@ -46,11 +46,14 @@ st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h
 st.markdown('<h3 style="font-family:Arial;text-align:left;">Tell us your trade problem</h4>',
         unsafe_allow_html=True,)
 
-st.text_area("",
+st.text_area("Please explain to us your issue, trying to be as concise as possible",
+  help='Write here',
   key='input_text',
   height=200,
   max_chars=5000
 )
+
+st.session_state.input_text
 
 st.markdown('---')
 st.markdown(text_short)
