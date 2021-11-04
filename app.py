@@ -33,9 +33,10 @@ st.sidebar.markdown(text_long)
 
 st.title('ITC ChatBot')
 
-state.input = st.text_area(
+st.text_area(
   "Tell us your trade problem:",
-  state.input,
+  "prova",
+  key='input_text',
   height=200,
-  max_chars=5000,
+  max_chars=5000
 )
