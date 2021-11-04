@@ -16,6 +16,9 @@ def main():
 
     input_text = load_page()
 
+    st.markdown('<h5 style="font-family:Courier;text-align:center;">input_text</h5>',
+            unsafe_allow_html=True,)
+
 
 
 
