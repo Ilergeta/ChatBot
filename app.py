@@ -9,6 +9,7 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 import pickle
+import matplotlib.pyplot as plt
 import time
 
 import tensorflow as tf
@@ -37,6 +38,37 @@ def main():
     use_result = np.inner(question_encodings, question_orig_encodings)
 
     use_result
+
+    # Make visualization
+    fig, ax = plt.subplots(2, 5, figsize=(20, 8))
+
+    use_result = np.inner(question_encodings, question_orig_encodings)
+
+    fig.suptitle('Similarity for USE model', fontsize=30)
+
+    x = range(use_result.shape[1])
+
+    j = 0
+    for row in range(use_result.shape[0]):
+        if row >= 5:
+            j = 1
+            i = row - 5
+
+        else:
+            i = row
+
+        ax[j][i].scatter(x=x, y=use_result[row, :])
+        ax[j][i].text(0.5, 1, row, size=20, horizontalalignment='center', transform=ax[j][i].transAxes)
+
+        best_value = np.argmax(use_result[row])
+        ax[j][i].scatter(x[best_value], use_result[row, best_value], marker='o', s=100)
+
+        ax[j][i].text(x[best_value] + 10, use_result[row, best_value], best_value, size=16,
+                      color='darkorange', weight='bold')
+
+
+
+
 
 def load_page():
     text_short = """
