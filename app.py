@@ -27,8 +27,14 @@ def main():
     # Create encodings for test questions
     question_encodings = embed(test_questions)
 
+    # Load previous data from pickle
+    pickle_name = 'USE_inputs_2021-11-04_204358.bak'
+    with open(os.path.join('../sandbox', pickle_name), 'rb') as file_open:
+        _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
 
+    use_result = np.inner(question_encodings, question_orig_encodings)
 
+    use_result
 
 def load_page():
     text_short = """
