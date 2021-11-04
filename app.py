@@ -43,15 +43,14 @@ st.sidebar.markdown(text_long)
 st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h2>',
         unsafe_allow_html=True,)
 
+st.markdown('<h3 style="font-family:Arial;text-align:right;">Tell us your trade problem</h4>',
+        unsafe_allow_html=True,)
+
 st.text_area(
-  "Tell us your trade problem:",
   key='input_text',
   height=200,
   max_chars=5000
 )
-
-st.markdown('<h2 style="font-family:Courier;text-align:center;">Your Story</h2>',
-        unsafe_allow_html=True,)
 
 st.markdown('---')
 st.markdown(text_short)
