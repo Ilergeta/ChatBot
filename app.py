@@ -7,9 +7,8 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 
-if st.checkbox('Show dataframe'):
-    chart_data = pd.DataFrame(
-       np.random.randn(20, 3),
-       columns=['a', 'b', 'c'])
+option = st.selectbox(
+    'Which number do you like best?',
+     df['first column'])
 
-    chart_data
+'You selected: ', option
