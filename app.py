@@ -8,16 +8,34 @@ import streamlit as st
 import numpy as np
 import time
 
-'Starting a long computation...'
+text_short = """
+__ITC ML similarity model__:
+_This website is for entertainment purposes only!_
+This website uses a machine learning model to generate trade policies based on
+previous ITC policies official documents made for similar trade issues detected
+"""
 
-# Add a placeholder
-latest_iteration = st.empty()
-bar = st.progress(0)
+text_long = """
+__ITC ML similarity model__:
+_This website is for entertainment purposes only!_
+This website uses a machine learning model to generate trade policies based on
+previous ITC policies official documents made for similar trade issues detected.
 
-for i in range(100):
-  # Update the progress bar with each iteration.
-  latest_iteration.text(f'Iteration {i+1}')
-  bar.progress(i + 1)
-  time.sleep(0.1)
+__Description__:
+This project uses a USE (Universal Sentence Encoder) published by Google at TensorFlow
+Hub and it is based on a DAN (Deep Averaging Network) architecture. Once new input text
+is encoded it is compared (with cosinus similarity) to previous ITC policies and
+model outputs more similar activities proposed for those issues.
+"""
 
-'...and now we\'re done!'
+st.markdown(text_short)
+st.sidebar.markdown(text_long)
+
+st.title('ITC ChatBot')
+
+state.input = st.text_area(
+  "Tell us your trade problem:",
+  state.input,
+  height=200,
+  max_chars=5000,
+)
