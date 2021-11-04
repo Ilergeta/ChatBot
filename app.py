@@ -40,7 +40,8 @@ model outputs more similar activities proposed for those issues.
 
 st.sidebar.markdown(text_long)
 
-st.title('ITC ML ChatBot')
+st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h2>',
+        unsafe_allow_html=True,)
 
 st.text_area(
   "Tell us your trade problem:",
