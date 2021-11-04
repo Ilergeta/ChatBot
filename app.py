@@ -7,10 +7,13 @@ import pandas as pd
 import streamlit as st
 import numpy as np
 
-df = pd.DataFrame({'first column': [1, 2, 3], 'second column': [4, 5, 6]})
+# Add a selectbox to the sidebar:
+add_selectbox = st.sidebar.selectbox(
+    'How would you like to be contacted?',
+    ('Email', 'Home phone', 'Mobile phone')
+)
 
-option = st.selectbox(
-    'Which number do you like best?',
-     df['first column'])
-
-'You selected: ', option
+# Add a slider to the sidebar:
+add_slider = st.sidebar.slider(
+    'Select a range of values',
+    0.0, 100.0, (25.0, 75.0)
