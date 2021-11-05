@@ -77,7 +77,7 @@ def load_page():
     )
 
     if st.button('Clear text'):
-        st.session_state.input_text.clear()
+        st.session_state.clear()
 
 
     return st.session_state.input_text
