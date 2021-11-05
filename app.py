@@ -40,12 +40,11 @@ def main():
 
         response_list = data_pd[data_pd['Issue'].str.contains(unique_questions[best_value], regex=False)]['Activity'].tolist()
 
+        st.markdown('---')
+
         for response_text in response_list:
             st.markdown(response_text)
-
-        #st.markdown('<h5 style="font-family:Courier;text-align:center;"> It seems you have a '
-        #            + input_text + '</h5>',
-        #            unsafe_allow_html=True, )
+            st.markdown('---')
 
         if st.button('Show similarity viz'):
             make_viz(best_value, use_result)
