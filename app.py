@@ -41,8 +41,9 @@ def main():
 
         if st.button('Show similarity viz'):
             make_viz(best_value, use_result)
-        else:
-            st.write('Goodbye')
+
+            if st.button('Close similarity viz'):
+                st.pyplot()
 
     load_footer()
 
