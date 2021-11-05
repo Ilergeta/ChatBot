@@ -85,7 +85,7 @@ def load_page(state, lucky_questions):
       max_chars=5000
     )
 
-    st.write(lucky_questions[np.random(len(lucky_questions))])
+    st.write(lucky_questions[np.random.randint(len(lucky_questions))])
 
     left_column, right_column = st.beta_columns(2)
 
@@ -95,7 +95,7 @@ def load_page(state, lucky_questions):
 
     with right_column:
         if st.button("I'm Feeling Lucky"):
-            state.input = lucky_questions[np.random(len(lucky_questions))]
+            state.input = lucky_questions[np.random.randint(len(lucky_questions))]
 
     return state.input
 
