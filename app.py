@@ -77,6 +77,10 @@ def load_page(state):
       height=200,
       max_chars=5000
     )
+
+    if st.button('Clear Text'):
+        state.clear()
+
     return state.input
 
 @st.cache
