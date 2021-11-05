@@ -89,8 +89,10 @@ def load_model():
 
 def make_viz(best_value, use_result):
     # Make visualization
-    fig, ax = plt.subplots(figsize=(20, 8))
+    fig, ax = plt.subplots(figsize=(12, 8))
     ax.set_title('Similarity for USE model', fontsize=30)
+    ax.xlabel('# previous trade policy')
+    ax.ylabel('cosine similarity')
     x = range(use_result.shape[1])
     ax.scatter(x=x, y=use_result[0, :])
     ax.scatter(x[best_value], use_result[0, best_value], marker='o', s=100)
