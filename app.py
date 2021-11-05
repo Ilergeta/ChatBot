@@ -79,6 +79,9 @@ def load_page(state, lucky_questions):
     model outputs more similar activities proposed for those issues.
     """
 
+    st.markdown('<h1 style="float: left;">Suzieq</h1><img style="float: right;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/International_Trade_Centre_Logo.svg/1200px-International_Trade_Centre_Logo.svg.png" />',
+                unsafe_allow_html=True)
+
     st.sidebar.markdown(text_long)
 
     st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h2>',
