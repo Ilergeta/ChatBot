@@ -75,6 +75,7 @@ def load_page(state):
             unsafe_allow_html=True,)
 
     state.input = st.text_area("Please explain to us your issue, trying to be as concise as possible",
+      state.input,
       key='input_text',
       height=200,
       max_chars=5000
