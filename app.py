@@ -69,15 +69,18 @@ def load_page():
     st.markdown('<h3 style="font-family:Arial;text-align:left;">Tell us your trade problem</h4>',
             unsafe_allow_html=True,)
 
+    initial_text = ''
+
+    if st.button('Clear text'):
+        initial_text = ''
+
     st.text_area("Please explain to us your issue, trying to be as concise as possible",
+      value=initial_text,
       help='Write in the text box and press Ctrl+Enter when finished',
       key='input_text',
       height=200,
       max_chars=5000
     )
-
-    if st.button('Clear text'):
-        st.session_state.clear()
 
 
     return st.session_state.input_text
