@@ -38,7 +38,11 @@ def main():
 
         make_response(best_value)
 
-        [data_pd[data_pd['Issue'].str.contains(x, regex=False)]['Activity'].tolist() for x in unique_questions[best_value]]
+        response_list = [data_pd[data_pd['Issue'].str.contains(x, regex=False)]['Activity'].tolist()
+                         for x in unique_questions[best_value]]
+
+        for response_text in response_list:
+            st.markdown(response_text)
 
         #st.markdown('<h5 style="font-family:Courier;text-align:center;"> It seems you have a '
         #            + input_text + '</h5>',
