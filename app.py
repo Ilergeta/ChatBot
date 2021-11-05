@@ -20,9 +20,9 @@ def main():
 
     state = _get_state()
 
-    embed, question_orig_encodings, lucky_questions = load_model()
-
     st.set_page_config(page_title="ITC ML ChatBot")
+
+    embed, question_orig_encodings, lucky_questions = load_model()
 
     input_text = load_page(state, lucky_questions)
 
