@@ -26,9 +26,6 @@ def main():
 
     input_text = load_page(state, lucky_questions)
 
-    st.markdown('<h5 style="font-family:Courier;text-align:center;">'+input_text+'</h5>',
-            unsafe_allow_html=True,)
-
     test_questions = [input_text]
 
     if test_questions[0] != '':
@@ -38,6 +35,12 @@ def main():
         use_result = np.inner(question_encodings, question_orig_encodings)
 
         best_value = np.argmax(use_result[0])
+
+        make_response(best_value)
+
+        #st.markdown('<h5 style="font-family:Courier;text-align:center;"> It seems you have a '
+        #            + input_text + '</h5>',
+        #            unsafe_allow_html=True, )
 
         if st.button('Show similarity viz'):
             make_viz(best_value, use_result)
@@ -85,8 +88,6 @@ def load_page(state, lucky_questions):
       max_chars=5000
     )
 
-    st.write(lucky_questions[np.random.randint(len(lucky_questions))])
-
     left_column, right_column = st.beta_columns(2)
 
     with left_column:
@@ -109,6 +110,15 @@ def load_model():
         _, question_orig_encodings, lucky_questions, data_pd, _ = pickle.load(file_open)
     return embed, question_orig_encodings, lucky_questions
 
+def make_response(best_value):
+    response_text = """
+    It seems you have a **best_issue_tag** issue. From our experience, we recommend to you to 
+    take some **best_activity_tag** policy.
+    
+    Above we show you some detailed policies that can fit to your issue.    
+    """
+
+    st.markdown(response_text)
 
 def make_viz(best_value, use_result):
     # Make visualization
