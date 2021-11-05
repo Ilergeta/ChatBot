@@ -43,6 +43,8 @@ def main():
 
     load_footer()
 
+    state.sync()
+
 
 def load_page(state):
     text_long = """
