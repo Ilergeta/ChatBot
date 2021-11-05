@@ -10,6 +10,7 @@ import streamlit as st
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
+from SessionState import _get_state
 import time
 
 import tensorflow as tf
@@ -17,9 +18,11 @@ import tensorflow_hub as hub
 
 def main():
 
+    state = _get_state()
+
     st.set_page_config(page_title="ITC ML ChatBot")
 
-    input_text = load_page()
+    input_text = load_page(state)
 
     st.markdown('<h5 style="font-family:Courier;text-align:center;">'+input_text+'</h5>',
             unsafe_allow_html=True,)
@@ -41,7 +44,7 @@ def main():
     load_footer()
 
 
-def load_page():
+def load_page(state):
     text_long = """
     __ITC ML similarity model__:
     
@@ -69,7 +72,7 @@ def load_page():
     st.markdown('<h3 style="font-family:Arial;text-align:left;">Tell us your trade problem</h4>',
             unsafe_allow_html=True,)
 
-    st.text_area("Please explain to us your issue, trying to be as concise as possible",
+    state.input = st.text_area("Please explain to us your issue, trying to be as concise as possible",
       help='Write in the text box and press Ctrl+Enter when finished',
       key='input_text',
       height=200,
@@ -77,7 +80,7 @@ def load_page():
     )
 
 
-    return st.session_state.input_text
+    return state
 
 @st.cache
 def load_model():
