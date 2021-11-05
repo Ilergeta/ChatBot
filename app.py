@@ -77,9 +77,7 @@ def load_page(state):
       height=200,
       max_chars=5000
     )
-
-
-    return state
+    return state.input
 
 @st.cache
 def load_model():
