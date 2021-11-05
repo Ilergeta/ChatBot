@@ -70,10 +70,10 @@ def load_page():
             unsafe_allow_html=True,)
 
     text = st.empty()
-    initial_text = ''
+    initial_text = ' '
 
     if st.button('Clear text'):
-        initial_text = ''
+        initial_text = ' '
 
     text.text_area("Please explain to us your issue, trying to be as concise as possible",
       value=initial_text,
