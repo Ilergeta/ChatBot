@@ -41,11 +41,12 @@ def main():
         response_list = data_pd[data_pd['Issue'].str.contains(unique_questions[best_value],
                                                               regex=False)]['Activity'].tolist()
 
-        st.markdown('---')
+        #st.markdown('---')
 
-        for response_text in response_list:
-            st.markdown(response_text)
-            st.markdown('---')
+        for i in enumerate(response_list):
+            st.markdown('*Policiy {}*:'.format(i+1))
+            st.markdown(response_text[i])
+            #st.markdown('---')
 
         if st.button('Show similarity viz'):
             make_viz(best_value, use_result)
