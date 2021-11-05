@@ -85,11 +85,15 @@ def load_page(state):
       max_chars=5000
     )
 
-    if st.button('Clear Text'):
-        state.input = ''
+    left_column, right_column = st.columns(2)
 
-    if st.button("I'm Feeling Lucky"):
-        state.input = 'El que jo vulgui'
+    with left_column:
+        if st.button('Clear Text'):
+            state.input = ''
+
+    with right_column:
+        if st.button("I'm Feeling Lucky"):
+            state.input = 'El que jo vulgui'
 
     return state.input
 
