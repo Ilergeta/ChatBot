@@ -39,7 +39,7 @@ def main():
 
         best_value = np.argmax(use_result[0])
 
-        if st.button('Show similarity viz'):
+        if st.button('Show similarity viz', help='some text'):
             make_viz(best_value, use_result)
 
             if st.button('Close similarity viz'):
