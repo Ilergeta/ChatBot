@@ -28,7 +28,7 @@ def main():
 
     embed, question_orig_encodings = load_model()
 
-    if test_questions[0] != '':
+    if test_questions[0] != ' ':
         # Create encodings for test questions
         question_encodings = embed(test_questions)
 
