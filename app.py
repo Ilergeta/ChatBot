@@ -17,6 +17,8 @@ import tensorflow_hub as hub
 
 def main():
 
+    st.set_page_config(page_title="ITC ML ChatBot")
+
     input_text = load_page()
 
     st.markdown('<h5 style="font-family:Courier;text-align:center;">'+input_text+'</h5>',
@@ -74,6 +76,10 @@ def load_page():
       max_chars=5000
     )
 
+    if st.button('Clear text'):
+        st.session_state.input_text.clear()
+
+
     return st.session_state.input_text
 
 @st.cache
@@ -89,8 +95,8 @@ def load_model():
 
 def make_viz(best_value, use_result):
     # Make visualization
-    fig, ax = plt.subplots(figsize=(12, 8))
-    ax.set_title('Similarity for USE model', fontsize=30)
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.set_title('Similarity values for USE model', fontsize=18)
     ax.set_xlabel('# previous trade policy')
     ax.set_ylabel('cosine similarity')
     x = range(use_result.shape[1])
