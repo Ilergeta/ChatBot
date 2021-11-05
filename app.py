@@ -38,8 +38,7 @@ def main():
 
         make_response(best_value)
 
-        response_list = [data_pd[data_pd['Issue'].str.contains(x, regex=False)]['Activity'].tolist()
-                         for x in unique_questions[best_value]]
+        response_list = data_pd[data_pd['Issue'].str.contains(unique_questions[best_value], regex=False)]['Activity'].tolist()
 
         for response_text in response_list:
             st.markdown(response_text)
