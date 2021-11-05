@@ -43,9 +43,9 @@ def main():
 
         #st.markdown('---')
 
-        for i in enumerate(response_list):
-            st.markdown('*Policiy {}*:'.format(i+1))
-            st.markdown(response_text[i])
+        for i, response_text in enumerate(response_list):
+            st.markdown('*Policy {}*:'.format(i+1))
+            st.markdown(response_text)
             #st.markdown('---')
 
         if st.button('Show similarity viz'):
