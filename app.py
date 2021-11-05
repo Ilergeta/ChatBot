@@ -79,7 +79,7 @@ def load_page(state, lucky_questions):
     model outputs more similar activities proposed for those issues.
     """
 
-    st.markdown('<img style="float: right; width:5%; heigh:auto" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/International_Trade_Centre_Logo.svg/1200px-International_Trade_Centre_Logo.svg.png" />',
+    st.markdown('<img style="float: left; width:20%; heigh:auto" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/International_Trade_Centre_Logo.svg/1200px-International_Trade_Centre_Logo.svg.png" />',
                 unsafe_allow_html=True)
 
     st.sidebar.markdown(text_long)
