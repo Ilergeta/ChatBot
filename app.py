@@ -85,6 +85,8 @@ def load_page(state, lucky_questions):
       max_chars=5000
     )
 
+    st.write(lucky_questions[np.random(len(lucky_questions))])
+
     left_column, right_column = st.beta_columns(2)
 
     with left_column:
