@@ -22,7 +22,7 @@ def main():
 
     st.set_page_config(page_title="ITC ML ChatBot")
 
-    embed, question_orig_encodings, lucky_questions = load_model()
+    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd = load_model()
 
     input_text = load_page(state, lucky_questions)
 
@@ -37,6 +37,8 @@ def main():
         best_value = np.argmax(use_result[0])
 
         make_response(best_value)
+
+        [data_pd[data_pd['Issue'].str.contains(x, regex=False)]['Activity'].tolist() for x in unique_questions[best_value]]
 
         #st.markdown('<h5 style="font-family:Courier;text-align:center;"> It seems you have a '
         #            + input_text + '</h5>',
@@ -107,13 +109,13 @@ def load_model():
     # Load previous data from pickle
     pickle_name = 'USE_inputs_2021-11-04_204358.bak'
     with open('./data/' + pickle_name, 'rb') as file_open:
-        _, question_orig_encodings, lucky_questions, data_pd, _ = pickle.load(file_open)
-    return embed, question_orig_encodings, lucky_questions
+        unique_questions, question_orig_encodings, lucky_questions, data_pd, _ = pickle.load(file_open)
+    return embed, unique_questions, question_orig_encodings, lucky_questions, data_pd
 
 def make_response(best_value):
     response_text = """
-    It seems you have a **best_issue_tag** issue. From our experience, we recommend to you to 
-    take some **best_activity_tag** policy.
+    It seems you have a **<best_issue_tag>** issue. From our experience, we recommend to you to 
+    take some **<best_activity_tag>** policy.
     
     Above we show you some detailed policies that can fit to your issue.    
     """
