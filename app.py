@@ -27,33 +27,25 @@ def main():
     # Load module containing USE
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 
-    # Create encodings for test questions
-    question_encodings = embed(test_questions)
+    if test_questions[0] != '':
+        # Create encodings for test questions
+        question_encodings = embed(test_questions)
 
-    # Load previous data from pickle
-    pickle_name = 'USE_inputs_2021-11-04_204358.bak'
-    with open('./data/'+pickle_name, 'rb') as file_open:
-        _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
+        # Load previous data from pickle
+        pickle_name = 'USE_inputs_2021-11-04_204358.bak'
+        with open('./data/'+pickle_name, 'rb') as file_open:
+            _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
 
-    use_result = np.inner(question_encodings, question_orig_encodings)
+        use_result = np.inner(question_encodings, question_orig_encodings)
 
-    best_value = np.argmax(use_result[0])
+        best_value = np.argmax(use_result[0])
 
-    make_viz(best_value, use_result)
+        make_viz(best_value, use_result)
+
+    load_footer()
 
 
 def load_page():
-    text_short = """
-    __Disclamer__:
-    
-    
-    _This website is not for legal purposes and it is work in progress!_
-    
-    
-    This website uses a machine learning model to generate trade policies based on
-    previous ITC policies official documents made for similar trade issues detected
-    """
-
     text_long = """
     __ITC ML similarity model__:
     
@@ -88,9 +80,6 @@ def load_page():
       max_chars=5000
     )
 
-    st.markdown('---')
-    st.markdown(text_short)
-
     return st.session_state.input_text
 
 
@@ -104,6 +93,21 @@ def make_viz(best_value, use_result):
     ax.text(x[best_value] + 10, use_result[0, best_value], best_value, size=16,
             color='darkorange', weight='bold')
     st.pyplot(fig)
+
+def load_footer():
+    text_short = """
+    __Disclamer__:
+
+
+    _This website is not for legal purposes and it is work in progress!_
+
+
+    This website uses a machine learning model to generate trade policies based on
+    previous ITC policies official documents made for similar trade issues detected
+    """
+
+    st.markdown('---')
+    st.markdown(text_short)
 
 
 if __name__ == "__main__":
