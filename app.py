@@ -82,7 +82,7 @@ def load_page(state):
     )
 
     if st.button('Clear Text'):
-        state.clear()
+        state.input = ''
 
     return state.input
 
