@@ -39,7 +39,8 @@ def main():
 
         best_value = np.argmax(use_result[0])
 
-        make_viz(best_value, use_result)
+        if st.button('Show similarity viz'):
+            make_viz(best_value, use_result)
 
     load_footer()
 
