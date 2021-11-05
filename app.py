@@ -20,16 +20,16 @@ def main():
 
     state = _get_state()
 
+    embed, question_orig_encodings, lucky_questions = load_model()
+
     st.set_page_config(page_title="ITC ML ChatBot")
 
-    input_text = load_page(state)
+    input_text = load_page(state, lucky_questions)
 
     st.markdown('<h5 style="font-family:Courier;text-align:center;">'+input_text+'</h5>',
             unsafe_allow_html=True,)
 
     test_questions = [input_text]
-
-    embed, question_orig_encodings = load_model()
 
     if test_questions[0] != '':
         # Create encodings for test questions
@@ -50,7 +50,7 @@ def main():
     state.sync()
 
 
-def load_page(state):
+def load_page(state, lucky_questions):
     text_long = """
     __ITC ML similarity model__:
     
@@ -93,7 +93,7 @@ def load_page(state):
 
     with right_column:
         if st.button("I'm Feeling Lucky"):
-            state.input = 'El que jo vulgui'
+            state.input = lucky_questions[np.random(len(lucky_questions))]
 
     return state.input
 
@@ -104,8 +104,8 @@ def load_model():
     # Load previous data from pickle
     pickle_name = 'USE_inputs_2021-11-04_204358.bak'
     with open('./data/' + pickle_name, 'rb') as file_open:
-        _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
-    return embed, question_orig_encodings
+        _, question_orig_encodings, lucky_questions, data_pd, _ = pickle.load(file_open)
+    return embed, question_orig_encodings, lucky_questions
 
 
 def make_viz(best_value, use_result):
