@@ -24,17 +24,11 @@ def main():
 
     test_questions = [input_text]
 
-    # Load module containing USE
-    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+    embed, question_orig_encodings = load_model()
 
     if test_questions[0] != '':
         # Create encodings for test questions
         question_encodings = embed(test_questions)
-
-        # Load previous data from pickle
-        pickle_name = 'USE_inputs_2021-11-04_204358.bak'
-        with open('./data/'+pickle_name, 'rb') as file_open:
-            _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
 
         use_result = np.inner(question_encodings, question_orig_encodings)
 
@@ -81,6 +75,16 @@ def load_page():
     )
 
     return st.session_state.input_text
+
+@st.cache
+def load_model():
+    # Load module containing USE
+    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+    # Load previous data from pickle
+    pickle_name = 'USE_inputs_2021-11-04_204358.bak'
+    with open('./data/' + pickle_name, 'rb') as file_open:
+        _, question_orig_encodings, _, data_pd, _ = pickle.load(file_open)
+    return embed, question_orig_encodings
 
 
 def make_viz(best_value, use_result):
