@@ -91,7 +91,7 @@ def main():
                         and activity_id not in activity_id_list:
 
                     if debug:
-                        st.markdown('* activity_id: {} -> activity_sentences:{}'.format(activity_id, activity_length))
+                        st.markdown('  * activity_id: {} -> activity_sentences:{}'.format(activity_id, activity_length))
 
                     response_list.append(activity_text)
                     activity_id_list.append(activity_id)
