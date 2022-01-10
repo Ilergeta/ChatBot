@@ -15,7 +15,7 @@ def main():
     # Define main parameters
     tol = 0.1
     max_sentences = 10
-    debug = False
+    debug = True
 
     # Needed to clean text_area st object
     state = _get_state()
