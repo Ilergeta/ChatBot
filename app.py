@@ -66,19 +66,19 @@ def main():
 
             if debug:
                 if n_answer == 0:
-                    print('-' * 100)
-                    print('Considered parameters:')
-                    print('\tTolerance value: {:.2f}%'.format(tol * 100))
-                    print('\tMaximum sentences in response output: {}'.format(max_sentences))
-                    print('-' * 100)
+                    st.markdown('-' * 100)
+                    st.markdown('Considered parameters:')
+                    st.markdown('\tTolerance value: {:.2f}%'.format(tol * 100))
+                    st.markdown('\tMaximum sentences in response output: {}'.format(max_sentences))
+                    st.markdown('-' * 100)
 
                     intro_text = 'Most similar '
                 else:
                     intro_text = 'Nearest '
 
-                print(intro_text + 'issue id: {} -> similarity: {:.2f}% ({:.2f}%)'
+                st.markdown(intro_text + 'issue id: {} -> similarity: {:.2f}% ({:.2f}%)'
                       .format(issue_id, answer[1] * 100, answer[2] * 100))
-                print('\tActivities associated: {}'.format(activity_answer_pd.shape[0]))
+                st.markdown('\tActivities associated: {}'.format(activity_answer_pd.shape[0]))
 
             for _, row in activity_answer_pd.iterrows():
 
@@ -91,7 +91,7 @@ def main():
                         and activity_id not in activity_id_list:
 
                     if debug:
-                        print('\t\tactivity_id: {} ->\tactivity_sentences:{}'.format(activity_id, activity_length))
+                        st.markdown('\t\tactivity_id: {} ->\tactivity_sentences:{}'.format(activity_id, activity_length))
 
                     response_list.append(activity_text)
                     activity_id_list.append(activity_id)
@@ -100,8 +100,8 @@ def main():
             if n_sentences_response >= max_sentences:
 
                 if debug:
-                    print('\nSentences limit reached, not more nearest policies will be considered!!!')
-                    print('-' * 100)
+                    st.markdown('\nSentences limit reached, not more nearest policies will be considered!!!')
+                    st.markdown('-' * 100)
 
                 break
 
