@@ -175,7 +175,7 @@ def make_intro():
 
 
 @st.cache
-def load_model(script_exec=True):
+def load_model():
     """
     Load model differentiating notebook (script_exec=False) or script exection (script_exec=True)
 
@@ -183,13 +183,8 @@ def load_model(script_exec=True):
     in order to minimize calculations in our web
     """
 
-    if script_exec:
-        local_folder = ''  # script execution
-    else:
-        local_folder = '../Flask'  # notebook execution
-
     # Load module containing USE
-    embed = hub.load(os.path.join(local_folder, 'data/USE_Model'))
+    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 
     # Load previous data from pickle
     pickle_name = 'USE_inputs_2022-01-10_123924.bak'
