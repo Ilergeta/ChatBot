@@ -1,6 +1,5 @@
 import pathlib
 
-import os
 import streamlit as st
 import numpy as np
 import pickle
@@ -188,7 +187,7 @@ def load_model():
 
     # Load previous data from pickle
     pickle_name = 'USE_inputs_2022-01-10_123924.bak'
-    with open(os.path.join(local_folder, 'data/') + pickle_name, 'rb') as file_open:
+    with open( 'data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
 
