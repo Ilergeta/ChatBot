@@ -1,5 +1,6 @@
 import pathlib
 
+import os
 import streamlit as st
 import numpy as np
 import pickle
@@ -12,6 +13,11 @@ import tensorflow_hub as hub
 
 def main():
 
+    # Define main parameters
+    tol = 0.1
+    max_sentences = 10
+    debug = True
+
     # Needed to clean text_area st object
     state = _get_state()
 
@@ -20,7 +26,8 @@ def main():
 
     # Load model (as st.cache, so it will load only first time execution)
     # and get variables that remain constant for every new query
-    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd = load_model()
+    model_tuple = load_model()
+    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd = model_tuple
 
     # Load first section page and get text filled by user
     input_text = load_page(state, lucky_questions)
@@ -30,30 +37,87 @@ def main():
 
     # Once new text is input new calculations are made
     if test_questions[0] != '':
+        # Load model (as st.cache, so it will load only first time execution)
+        # and get variables that remain constant for every new query
+        embed, unique_questions, question_orig_encodings, _, data_pd, unique_issues_pd = model_tuple
+
         # Create encodings for test questions
         question_encodings = embed(test_questions)
 
         # Make inner product between new question and previous ones (all word embeddings are unitary)
         use_result = np.inner(question_encodings, question_orig_encodings)
 
-        # Calculate maximum cosine similarity
-        best_value = np.argmax(use_result[0])
+        # Find most similar issue and nearest issues within tolerance
+        near_answers = find_near_answers(use_result[0,], tol)
 
-        # Load first section answer (Introduction and tag outputs)
-        make_response(best_value)
+        # Number of sentences in response output
+        n_sentences_response = 0
 
-        # From similar questions obtained, get their activities as proposed policies
-        response_list = data_pd[data_pd['Issue'].str.contains(unique_questions[best_value],
-                                                              regex=False)]['Activity'].tolist()
+        # Inizilize response list to save activity texts
+        response_list = []
+
+        # Inizilize activity id list to avoid outputting duplicated activities
+        activity_id_list = []
+
+        for n_answer, answer in enumerate(near_answers):
+
+            issue_id = unique_issues_pd.iloc[answer[0]]['issue_id']
+
+            activity_answer_pd = data_pd[['activity_id', 'activity']][data_pd['issue_id'] == issue_id]
+
+            if debug:
+                if n_answer == 0:
+                    print('-' * 100)
+                    print('Considered parameters:')
+                    print('\tTolerance value: {:.2f}%'.format(tol * 100))
+                    print('\tMaximum sentences in response output: {}'.format(max_sentences))
+                    print('-' * 100)
+
+                    intro_text = 'Most similar '
+                else:
+                    intro_text = 'Nearest '
+
+                print(intro_text + 'issue id: {} -> similarity: {:.2f}% ({:.2f}%)'
+                      .format(issue_id, answer[1] * 100, answer[2] * 100))
+                print('\tActivities associated: {}'.format(activity_answer_pd.shape[0]))
+
+            for _, row in activity_answer_pd.iterrows():
+
+                activity_id = row['activity_id']
+                activity_text = row['activity']
+
+                activity_length = len(activity_text.split('\n'))
+
+                if (n_answer == 0 or ((n_sentences_response + activity_length) <= max_sentences)) \
+                        and activity_id not in activity_id_list:
+
+                    if debug:
+                        print('\t\tactivity_id: {} ->\tactivity_sentences:{}'.format(activity_id, activity_length))
+
+                    response_list.append(activity_text)
+                    activity_id_list.append(activity_id)
+                    n_sentences_response += activity_length
+
+            if n_sentences_response >= max_sentences:
+
+                if debug:
+                    print('\nSentences limit reached, not more nearest policies will be considered!!!')
+                    print('-' * 100)
+
+                break
+
+        # Load first section answer (Introduction)
+        intro_text = make_intro()
+        st.markdown(intro_text)
 
         # Show proposed policies
-        for i, response_text in enumerate(response_list):
+        for i, policy_text in enumerate(response_list):
             st.markdown('*Policy {}*:'.format(i+1))
-            st.markdown(response_text)
+            st.markdown(policy_text)
 
         # Define viz button logic
         if st.button('Show similarity viz'):
-            make_viz(best_value, use_result)
+            make_viz(near_answers[0][0], use_result)
 
             if st.button('Close similarity viz'):
                 st.pyplot()
@@ -64,25 +128,76 @@ def main():
     # Need as last order for well working reset button
     state.sync()
 
+def find_near_answers(cosine_array, tol=0.1):
+    """
+    From a 1-dimensional numpy array, find other points with a
+    value not more different than "tol"%
+    tol value by default: 10%
+    """
+    # Find maximum value -> issue most similar
+    max_value = max(cosine_array)
+
+    # Get indexes from minimum to maximum (except maximum one)
+    ordered_indexes = np.argsort(cosine_array).tolist()
+
+    # Define output list
+    near_list = [[ordered_indexes.pop(), max_value, 0]]
+
+    # Garantee, at least, one calculation
+    difference = 0
+
+    while difference <= tol:
+        next_index = ordered_indexes.pop()
+        next_value = cosine_array[next_index]
+
+        difference = (max_value-next_value )/max_value
+
+        # In case value is similar enough it appends to list [index, value, difference]
+        if difference <= tol:
+            near_list.append([next_index, next_value, difference])
+
+    return near_list
+
+def make_intro():
+    """
+    -----------
+    TODO
+    Need to implement tags outputs depending on best_value
+    -----------
+    Load first section answer (Introduction and tag outputs) and show it
+    """
+
+    response_text = "Introduction paragraph.\n" +\
+    "TO BE DEFINED.\n\n"
+
+    # Show first section answer
+    return response_text
+
 
 @st.cache
-def load_model():
+def load_model(script_exec=True):
     """
-    Load model (as st.cache, so it will load only first time execution)
-    and get variables that remain constant for every new query
+    Load model differentiating notebook (script_exec=False) or script exection (script_exec=True)
 
     Those variables need to be previously computed and saved in a pickle file
     in order to minimize calculations in our web
     """
+
+    if script_exec:
+        local_folder = ''  # script execution
+    else:
+        local_folder = '../Flask'  # notebook execution
+
     # Load module containing USE
-    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
+    embed = hub.load(os.path.join(local_folder, 'data/USE_Model'))
 
     # Load previous data from pickle
-    pickle_name = 'USE_inputs_2021-11-04_204358.bak'
-    with open('./data/' + pickle_name, 'rb') as file_open:
-        unique_questions, question_orig_encodings, lucky_questions, data_pd, _ = pickle.load(file_open)
+    pickle_name = 'USE_inputs_2022-01-10_123924.bak'
+    with open(os.path.join(local_folder, 'data/') + pickle_name, 'rb') as file_open:
+        unique_questions, question_orig_encodings, lucky_questions, \
+        data_pd, _, unique_issues_pd = pickle.load(file_open)
 
-    return embed, unique_questions, question_orig_encodings, lucky_questions, data_pd
+    return embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd
 
 
 def load_page(state, lucky_questions):
