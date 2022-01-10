@@ -66,11 +66,11 @@ def main():
 
             if debug:
                 if n_answer == 0:
-                    st.markdown('_' * 100)
+                    st.markdown('*' * 100)
                     st.markdown('Considered parameters:')
                     st.markdown('* Tolerance value: {:.2f}%'.format(tol * 100))
                     st.markdown('* Maximum sentences in response output: {}'.format(max_sentences))
-                    st.markdown('_' * 100)
+                    st.markdown('*' * 100)
 
                     intro_text = 'Most similar '
                 else:
@@ -91,7 +91,7 @@ def main():
                         and activity_id not in activity_id_list:
 
                     if debug:
-                        st.markdown('  * activity_id: {} -> activity_sentences:{}'.format(activity_id, activity_length))
+                        st.markdown('\t* activity_id: {} -> activity_sentences:{}'.format(activity_id, activity_length))
 
                     response_list.append(activity_text)
                     activity_id_list.append(activity_id)
@@ -101,7 +101,7 @@ def main():
 
                 if debug:
                     st.markdown('\nSentences limit reached, not more nearest policies will be considered!!!')
-                    st.markdown('_' * 100)
+                    st.markdown('*' * 100)
 
                 break
 
