@@ -66,11 +66,11 @@ def main():
 
             if debug:
                 if n_answer == 0:
-                    st.markdown('*' * 100)
+                    st.markdown('#' * 100)
                     st.markdown('Considered parameters:')
                     st.markdown('* Tolerance value: {:.2f}%'.format(tol * 100))
                     st.markdown('* Maximum sentences in response output: {}'.format(max_sentences))
-                    st.markdown('*' * 100)
+                    st.markdown('#' * 100)
 
                     intro_text = 'Most similar '
                 else:
@@ -78,7 +78,7 @@ def main():
 
                 st.markdown(intro_text + 'issue id: {} -> similarity: {:.2f}% ({:.2f}%)'
                       .format(issue_id, answer[1] * 100, answer[2] * 100))
-                st.markdown('* Activities associated: {}'.format(activity_answer_pd.shape[0]))
+                st.markdown('Activities associated: {}'.format(activity_answer_pd.shape[0]))
 
             for _, row in activity_answer_pd.iterrows():
 
@@ -101,7 +101,7 @@ def main():
 
                 if debug:
                     st.markdown('\nSentences limit reached, not more nearest policies will be considered!!!')
-                    st.markdown('*' * 100)
+                    st.markdown('#' * 100)
 
                 break
 
