@@ -76,7 +76,7 @@ def main():
                 else:
                     intro_text = 'Nearest '
 
-                st.markdown(intro_text + 'issue id: {} -> similarity: {:.2f}% ({:.2f}%)'
+                st.markdown('*' + intro_text + 'issue id:* {} -> similarity: {:.2f}% ({:.2f}%)'
                       .format(issue_id, answer[1] * 100, answer[2] * 100))
                 st.markdown('Activities associated: {}'.format(activity_answer_pd.shape[0]))
 
@@ -100,7 +100,7 @@ def main():
             if n_sentences_response >= max_sentences:
 
                 if debug:
-                    st.markdown('\nSentences limit reached, not more nearest policies will be considered!!!')
+                    st.markdown('*\nSentences limit reached, not more nearest policies will be considered!!!*')
                     st.markdown('#' * 100)
 
                 break
