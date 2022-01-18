@@ -15,7 +15,7 @@ def main():
     # Define main parameters
     tol = 0.1
     max_sentences = 10
-    debug = True
+    #debug = True
 
     # Needed to clean text_area st object
     state = _get_state()
@@ -29,7 +29,9 @@ def main():
     embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd = model_tuple
 
     # Load first section page and get text filled by user
-    input_text = load_page(state, lucky_questions)
+    input_text, debug = load_page(state, lucky_questions)
+
+    st.markdown(debug)     #<---- debug
 
     # Convert string text into list to make compatible with existing algorithm
     test_questions = [input_text]
@@ -227,6 +229,9 @@ def load_page(state, lucky_questions):
     # Load sidebar message
     st.sidebar.markdown(text_long)
 
+    # Show debug checkbox
+    debug = st.sidebar.checkbox('Debug mode')
+
     # Show text_area with title and user information
     st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h2>',
             unsafe_allow_html=True,)
@@ -254,7 +259,7 @@ def load_page(state, lucky_questions):
         if st.button("I'm Feeling Lucky"):
             state.input = lucky_questions[np.random.randint(len(lucky_questions))]
 
-    return state.input
+    return state.input, debug
 
 
 def make_response(best_value):
