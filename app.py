@@ -31,8 +31,6 @@ def main():
     # Load first section page and get text filled by user
     input_text, debug = load_page(state, lucky_questions)
 
-    st.markdown(debug)     #<---- debug
-
     # Convert string text into list to make compatible with existing algorithm
     test_questions = [input_text]
 
