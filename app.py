@@ -186,7 +186,7 @@ def load_model():
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 
     # Load previous data from pickle
-    pickle_name = 'USE_inputs_2022-01-10_123924.bak'
+    pickle_name = 'USE_inputs_2022-01-17_202504.bak'
     with open( 'data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
