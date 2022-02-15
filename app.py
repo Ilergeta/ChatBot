@@ -241,6 +241,7 @@ def load_page(state, lucky_questions):
     Recommended model is __English__ where input data must be in English, but it is available, in a beta version, a __Multilingual__ model
     that can process 16 languages (Arabic, Chinese-simplified, Chinese-traditional, English, French, German, Italian,
     Japanese, Korean, Dutch, Polish, Portuguese, Spanish, Thai, Turkish, Russian).
+    
     In both cases policies proposed will be in English.
     
     __Description__:
@@ -276,7 +277,7 @@ def load_page(state, lucky_questions):
     with right_column:
         #selectbox_dict = {'English': 'USE-en', 'Multilingual (beta)': 'USE-multi'}
         selectbox_dict = {'USE-en':'English', 'USE-multi':'Multilingual (beta)'}
-        model = st.selectbox(label='Get a try to beta models', options=list(selectbox_dict.keys()), format_func=lambda x: selectbox_dict[x])
+        model = st.selectbox(label='Give a try to beta models', options=list(selectbox_dict.keys()), format_func=lambda x: selectbox_dict[x])
         #model = st.selectbox('', ('USE-en', 'USE-multi'))
 
     state.input = st.text_area("Please, describe in as much detail as possible the trade competitiveness constraints that SMEs are facing.",
