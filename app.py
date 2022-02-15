@@ -6,7 +6,7 @@ import pickle
 import matplotlib.pyplot as plt
 from SessionState import _get_state
 
-
+import tensorflow_text
 import tensorflow_hub as hub
 
 
@@ -25,11 +25,21 @@ def main():
 
     # Load model (as st.cache, so it will load only first time execution)
     # and get variables that remain constant for every new query
-    model_tuple = load_model()
-    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd = model_tuple
+
+    model = 'USE-en'
+
+    # Load model (as st.cache, so it will load only first time execution)
+    # and get variables that remain constant for every new query
+    model_dict = {'USE-en' : load_model(),
+                  'USE-multi' : load_model_multi()}
+
+    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd = model_dict[model]
 
     # Load first section page and get text filled by user
-    input_text, debug = load_page(state, lucky_questions)
+    input_text, debug, model = load_page(state, lucky_questions)
+
+    # Update variables with model selected value
+    embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd = model_dict[model]
 
     # Convert string text into list to make compatible with existing algorithm
     test_questions = [input_text]
@@ -38,7 +48,7 @@ def main():
     if test_questions[0] != '':
         # Load model (as st.cache, so it will load only first time execution)
         # and get variables that remain constant for every new query
-        embed, unique_questions, question_orig_encodings, _, data_pd, unique_issues_pd = model_tuple
+        #embed, unique_questions, question_orig_encodings, _, data_pd, unique_issues_pd = model_tuple
 
         # Create encodings for test questions
         question_encodings = embed(test_questions)
@@ -68,6 +78,7 @@ def main():
                 if n_answer == 0:
                     st.markdown('#' * 100)
                     st.markdown('Considered parameters:')
+                    st.markdown('* Model used: {}'.format(model))
                     st.markdown('* Tolerance value: {:.2f}%'.format(tol * 100))
                     st.markdown('* Maximum sentences in response output: {}'.format(max_sentences))
                     st.markdown('#' * 100)
@@ -194,6 +205,27 @@ def load_model():
     return embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd
 
 
+@st.cache
+def load_model_multi():
+    """
+    Load model differentiating notebook (script_exec=False) or script exection (script_exec=True)
+
+    Those variables need to be previously computed and saved in a pickle file
+    in order to minimize calculations in our web
+    """
+
+    # Load module containing USE
+    embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder-multilingual/3')
+
+    # Load previous data from pickle
+    pickle_name = 'USE_multi_inputs_2022-01-28_114947.bak'
+    with open('data/' + pickle_name, 'rb') as file_open:
+        unique_questions, question_orig_encodings, lucky_questions, \
+        data_pd, _, unique_issues_pd = pickle.load(file_open)
+
+    return embed, unique_questions, question_orig_encodings, lucky_questions, data_pd, unique_issues_pd
+
+
 def load_page(state, lucky_questions):
     """
     Load first section page: sidebar text, text_area (with titles) and reset+random buttons.
@@ -202,14 +234,14 @@ def load_page(state, lucky_questions):
     """
 
     text_long = """
-    __ITC ML similarity model__:
+    __ITC ML similarity models__:
     
+    You can select the desired model to use in the TradeBot between two options:
     
-    _This website is not for legal purposes and it is work in progress!_
-    
-    
-    This website uses a machine learning model to generate trade policies based on
-    previous ITC policies official documents made for similar trade issues detected.
+    Recommended model is __English__ where input data must be in English, but it is available, in a beta version, a __Multilingual__ model
+    that can process 16 languages (Arabic, Chinese-simplified, Chinese-traditional, English, French, German, Italian,
+    Japanese, Korean, Dutch, Polish, Portuguese, Spanish, Thai, Turkish, Russian).
+    In both cases policies proposed will be in English.
     
     __Description__:
     
@@ -234,10 +266,20 @@ def load_page(state, lucky_questions):
     st.markdown('<h2 style="font-family:Arial;text-align:center;">ITC ML TradeBot</h2>',
             unsafe_allow_html=True,)
 
-    st.markdown('<h3 style="font-family:Arial;text-align:left;">Tell us your trade problem</h4>',
-            unsafe_allow_html=True,)
+    # Define two page columns in order to show both buttons at same line
+    left_column, right_column = st.beta_columns([4,1.5])
 
-    state.input = st.text_area("Please explain to us your issue, trying to be as concise as possible",
+    with left_column:
+        st.markdown('<h3 style="font-family:Arial;text-align:left;">Tell us your trade problem</h3>',
+                unsafe_allow_html=True,)
+
+    with right_column:
+        #selectbox_dict = {'English': 'USE-en', 'Multilingual (beta)': 'USE-multi'}
+        selectbox_dict = {'USE-en':'English', 'USE-multi':'Multilingual (beta)'}
+        model = st.selectbox(label='Get a try to beta models', options=list(selectbox_dict.keys()), format_func=lambda x: selectbox_dict[x])
+        #model = st.selectbox('', ('USE-en', 'USE-multi'))
+
+    state.input = st.text_area("Please, describe in as much detail as possible the trade competitiveness constraints that SMEs are facing.",
       state.input or '',
       key='input_text',
       height=200,
@@ -257,7 +299,7 @@ def load_page(state, lucky_questions):
         if st.button("I'm Feeling Lucky"):
             state.input = lucky_questions[np.random.randint(len(lucky_questions))]
 
-    return state.input, debug
+    return state.input, debug, model
 
 
 def make_response(best_value):

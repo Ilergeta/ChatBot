@@ -2,3 +2,4 @@ matplotlib
 streamlit==0.70.0
 tensorflow
 tensorflow_hub
+tensorflow-text
