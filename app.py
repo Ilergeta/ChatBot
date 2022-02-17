@@ -62,10 +62,10 @@ def main():
         # Number of sentences in response output
         n_sentences_response = 0
 
-        # Inizilize response list to save activity texts
+        # Initialize response list to save activity texts
         response_list = []
 
-        # Inizilize activity id list to avoid outputting duplicated activities
+        # Initialize activity id list to avoid outputting duplicated activities
         activity_id_list = []
 
         for n_answer, answer in enumerate(near_answers):
@@ -153,7 +153,7 @@ def find_near_answers(cosine_array, tol=0.1):
     # Define output list
     near_list = [[ordered_indexes.pop(), max_value, 0]]
 
-    # Garantee, at least, one calculation
+    # Guarantee, at least, one calculation
     difference = 0
 
     while difference <= tol:
@@ -177,8 +177,12 @@ def make_intro():
     Load first section answer (Introduction and tag outputs) and show it
     """
 
-    response_text = "Introduction paragraph.\n" +\
-    "TO BE DEFINED.\n\n"
+    response_text = """
+        The following is a list of the policy solutions in ITC’s database that policymakers have considered in similar 
+        contexts. These policies are potentially relevant for the problem described above but should be used with caution. 
+        Extrapolating country-specific policy solutions on new contexts can have unintended consequences or result in different 
+        outcomes from the original ones.\n\n
+        """
 
     # Show first section answer
     return response_text
@@ -197,7 +201,7 @@ def load_model():
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 
     # Load previous data from pickle
-    pickle_name = 'USE_inputs_2022-01-17_202504.bak'
+    pickle_name = 'USE_inputs_prod_2022-02-16_150657.bak'
     with open( 'data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
@@ -218,7 +222,7 @@ def load_model_multi():
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder-multilingual/3')
 
     # Load previous data from pickle
-    pickle_name = 'USE_multi_inputs_2022-01-28_114947.bak'
+    pickle_name = 'USE_multi_inputs_prod_2022-02-17_123155.bak'
     with open('data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
