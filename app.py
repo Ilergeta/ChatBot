@@ -201,7 +201,7 @@ def load_model():
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder/4')
 
     # Load previous data from pickle
-    pickle_name = 'USE_inputs_prod_2022-02-16_150657.bak'
+    pickle_name = 'USE_inputs_prod_2022-02-18_111743.bak'
     with open( 'data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
@@ -222,7 +222,7 @@ def load_model_multi():
     embed = hub.load('https://tfhub.dev/google/universal-sentence-encoder-multilingual/3')
 
     # Load previous data from pickle
-    pickle_name = 'USE_multi_inputs_prod_2022-02-17_123155.bak'
+    pickle_name = 'USE_multi_inputs_prod_2022-02-18_112051.bak'
     with open('data/' + pickle_name, 'rb') as file_open:
         unique_questions, question_orig_encodings, lucky_questions, \
         data_pd, _, unique_issues_pd = pickle.load(file_open)
